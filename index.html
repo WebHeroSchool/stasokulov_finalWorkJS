@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Catch the mouse</title>
+    <link rel='stylesheet' href='fonts.css'>
+    <link rel = 'stylesheet' href = 'style.css'>
+    
+</head>
+<body>
+    <main>
+        <div class = 'header'>
+            <div class = 'counter'>
+                <div class = 'counter__level-wrap'>
+                    <div class = 'counter__level'>
+                        3
+                    </div>
+
+                </div>
+
+                <div class = 'counter__points'>
+                    <div class = 'couter__points-success-wrap'>
+                        <div class = 'couter__points-success'>
+                            128
+                        </div>
+                        
+                    </div>
+                    <div class = 'couter__points-life'>
+                        <div class = 'couter__points-life-item heart_active'>
+                        </div>
+                        <div class = 'couter__points-life-item heart_active'>
+                        </div>
+                        <div class = 'couter__points-life-item heart_deactive'>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class = 'control'>
+                <button class = 'start'>
+                    Начать
+                </button>
+                <a href="#rules">
+                    <button class = 'manual' href="#rules">
+                        ?
+                    </button>
+                </a>
+            </div>
+
+        </div>
+
+        <div class='hole' id = 'hole_1'>
+        </div>
+
+        <div class='hole' id = 'hole_2'> 
+        </div>
+
+        <div class='hole' id = 'hole_3'>
+           <img class = 'animal' src = 'img/animals/mouse.png' alt = 'mouse'>
+        </div>
+
+        <div class='hole' id = 'hole_4'>
+                <img class = 'animal' src = 'img/animals/lion.png' alt = 'lion'>
+        </div>
+
+        <div class='hole' id = 'hole_5'>
+        </div>
+
+    </main>
+
+<!-- Это ссылка для открывания модального окна об окончании игры. Удалить после приема верстки.-->
+
+    <div style="background-color: #AE8348;">
+        <a href="#gameOver">Открыть финальное окно</a>
+     </div>
+    
+<!--Модальные окна-->
+    
+    <div id = 'gameOver' class="modal_wrap">
+        <div class="modal">
+
+            <div class="modal__title">
+                ИГРА ЗАВЕРШЕНА
+            </div>
+
+            <div class="modal__message">
+                <div class="gameOver__message-begin">
+                    Поздравляем! Вы набрали:
+                </div>
+                <div class="gameOver__points">
+                    512
+                </div>
+                <div class="gameOver__message-end">
+                    очков!
+                </div>
+            </div>
+
+            <div class="modal__close">
+                <a href="#close" title="OK" >OK</a>
+            </div>
+            
+        </div>
+    </div>
+
+
+    <div id = 'rules' class="modal_wrap">
+        <div class="modal">
+
+            <div class="modal__title">
+                ПРАВИЛА ИГРЫ
+            </div>
+
+            <div class="modal__message">
+                <ol class = 'rulesList'>
+                    <li>В одной из 5-ти норок в случайном порядке периодически появляется мышь 🐭и другие emoji 🐭🐼🐻🦊🐱🐱...</li>
+                    <li>Нужно поймать мышь. При клике по мыши игроку добавляется +10 очков.</li>
+                    <li>После каждой пятой пойманной мыши скорость её случайного появления увеличивается.</li>
+                    <li>Если клик был выполнен по другому emoji, то у игрока отнимается жизнь. Всего 3 жизни. Если жизни закончились, то игра останавливается.</li>
+                </ol>
+                
+            </div>
+
+            <div class="modal__close">
+                <a href="#close" title="OK" >OK</a>
+            </div>
+            
+        </div>
+    </div>
+
+    
+    
+</body>
+</html>
