@@ -58,7 +58,7 @@ function goGame() {
     }
 
     function restart() {
-        setTimeout(goGame, 200);
+        setTimeout(goGame, 1000);
     }
 
     //Обработка клика
