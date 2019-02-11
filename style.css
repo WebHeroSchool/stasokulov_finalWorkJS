@@ -29,7 +29,6 @@ main {
 }
 
 .header {
-   /* margin: calc(100vw/1440*44) calc(100vw/1440*51) 0 calc(100vw/1440*49);*/
     display: flex;
     justify-content: space-between;
 }
@@ -206,14 +205,14 @@ main {
 .animal {
     width: calc(100vw/1440*160);
     height: calc(100vw/1440*160);
-    animation: move 1s ease-out;
+    animation: move 3s ease-out;
 }
 
 @keyframes move {
-    from {width: 0; height: 0; opacity: 0;}
+    from {width: 50%; height: 50%; opacity: 0;}
     40% {width: calc(100vw/1440*160); height: calc(100vw/1440*160); opacity: 1;}
     60% {width: calc(100vw/1440*160); height: calc(100vw/1440*160); opacity: 1;}
-    to {width: 0; height: 0; opacity: 0;}
+    to {width: 20%; height: 20%; opacity: 0;}
     }
 
 /*Модальные окна*/

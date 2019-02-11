@@ -1,72 +1,107 @@
 
 let start = document.querySelector('.start');
-start.addEventListener('click', goGame);
-
-function getRandomHole() {
-    let min = 1;
-    let max = 5;
-    let randNum = Math.random() * (max - min + 1) + min;
-    numHole = Math.floor(randNum);
-    let hole = document.getElementById(`${'hole_'}${numHole}`);
-    return hole;
-}
-
-function getRandomAnimalName() {
-    //Пытаемся вызвать имя мыши
-    let chanceMouse = 0.4;//Вероятность вызова имени мыши
-    if( Math.random() <= chanceMouse ) {
-        return 'mouse';
-    };
-
-    //Если имя мыши не вызвано, то вызываем имя случайного животного
-    let zoo = ['bear', 'cat', 'cow', 'fox', 'koala', 'lion', 'panda', 'tiger', 'rabbit', 'pig'];
-    let arr = zoo;
-    let min = 0;
-    let max = zoo.length;
-    let numberAnimal = Math.random() * (max - min);
-    randAnimal = zoo[Math.floor(numberAnimal)];
-    return randAnimal;
-} 
-
-function getRandomAnimal() {
-    let animalName = getRandomAnimalName();
-    let img = document.createElement('img');
-    img.classList.add('animal');
-    img.id = `${animalName}`;
-    img.src = `${'img/animals/'}${animalName}${'.png'}`;
-    img.alt = `${animalName}`;
-    return img;    
-}
+start.addEventListener('click', beginGame);
 
 //Запуск игры
-function goGame() {
-    //Получаем случайную нору и случайное животное
-    let hole = getRandomHole();
-    let animal = getRandomAnimal();
+function beginGame() {
+    let pointsSuccess = document.querySelector('.couter__points-success');
+        pointsSuccess.innerHTML = 0;
 
-    //Вешаем обработчик клика на животное и вставляем животное в нору
-    animal.addEventListener('mousedown', catchedAnimal);
-    hole.appendChild(animal);
+    goGame();
 
-    //Убираем животное по таймеру и перезапускаем игру
-    let removeTimer = setTimeout(removeAnimal, 1000);
+    function goGame() {
+        //Получаем случайную нору и случайное животное
+        let hole = randomValue.getRandomHole();
+        let animal = randomValue.getRandomAnimal();
 
-    function removeAnimal() {
-        hole.removeChild(animal);
-        animal.removeEventListener('mousedown', catchedAnimal);
-        restart();             
-    }
+        //Вешаем обработчик клика на животное и вставляем животное в нору
+        animal.addEventListener('mousedown', catchedAnimal);
+        hole.appendChild(animal);
 
-    function restart() {
-        setTimeout(goGame, 1000);
-    }
+        //Убираем животное по таймеру и перезапускаем игру
+        let timer = setTimeout(newCycle, 3000);
 
-    //Обработка клика
-    function catchedAnimal(event) {
-        clearTimeout(removeTimer); //Отменяем удаление животного по таймеру
-        removeAnimal(); //Удаляем животное
-        console.log(event.toElement);
+        function newCycle() {
+            hole.removeChild(animal);
+            animal.removeEventListener('mousedown', catchedAnimal);
+            restart();             
+        }
+
+        function restart() {
+            setTimeout(goGame, 1000);
+        }
+
+        //Обработка клика
+        function catchedAnimal(event) {
+            clearTimeout(timer); //Отменяем удаление животного по таймеру
+            checkClick (event);
+            newCycle(); //Запускаем новый цикл
+            console.log(event.toElement);
+        }
+
+        //Запись очков и жизней
+        function checkClick (event) {
+            let animalName = event.toElement.id;
+            if (animalName === 'mouse') {
+                newGame.scope += 10;
+                pointsSuccess.innerHTML = newGame.scope;
+            }
+            console.log(animalName);
+            console.log(newGame.scope);
+
+        }
     }
 };
+
+//Генератор случайных нор и животных
+let randomValue = {
+    getRandomHole() {
+        let min = 1;
+        let max = 5;
+        let randNum = Math.random() * (max - min + 1) + min;
+        let numHole = Math.floor(randNum);
+        let hole = document.getElementById(`${'hole_'}${numHole}`);
+        return hole;
+    },
+
+    getRandomAnimalName() {
+        //Пытаемся вызвать имя мыши
+        let chanceMouse = 0.4;//Вероятность вызова имени мыши
+        if( Math.random() <= chanceMouse ) {
+            return 'mouse';
+        };
+        //Если имя мыши не вызвано, то вызываем имя случайного животного
+        let zoo = ['bear', 'cat', 'cow', 'fox', 'koala', 'lion', 'panda', 'tiger', 'rabbit', 'pig'];
+        let min = 0;
+        let max = zoo.length;
+        let numberAnimal = Math.random() * (max - min);
+        let randAnimal = zoo[Math.floor(numberAnimal)];
+        return randAnimal;
+    },
+
+    getRandomAnimal() {
+        let animalName = this.getRandomAnimalName();
+        let img = document.createElement('img');
+        img.classList.add('animal');
+        img.id = `${animalName}`;
+        img.src = `${'img/animals/'}${animalName}${'.png'}`;
+        img.alt = `${animalName}`;
+        return img;    
+    },
+};
+
+class Game {
+    constructor () {
+        this.scope = 0;
+        this.lives = 3;
+        this.isRunning = false;
+        this.isMouse = false;
+    }
+
+
+
+};
+
+let newGame = new Game();
 
 
