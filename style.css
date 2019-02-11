@@ -175,6 +175,9 @@ main {
     box-shadow: inset 0px calc(100vw/160) calc(100vw/144) rgba(0, 0, 0, 0.2);
     border-radius: 50%;
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 #hole_1{
@@ -206,6 +209,7 @@ main {
     width: calc(100vw/1440*160);
     height: calc(100vw/1440*160);
     animation: move 3s ease-out;
+    
 }
 
 @keyframes move {
