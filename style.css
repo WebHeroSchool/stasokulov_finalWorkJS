@@ -4,7 +4,6 @@ body {
     font-style: normal;
     font-weight: bold;
     text-align: center;
-    /*position: relative;*/
 }
 
 button {
@@ -27,18 +26,12 @@ main {
     box-sizing: border-box;
     background-image: url(img/gameboard.svg);
     background-size: cover;
-    /*position: absolute;*/
 }
 
 .header {
-   /* margin: calc(100vw/1440*44) calc(100vw/1440*51) 0 calc(100vw/1440*49);*/
     display: flex;
     justify-content: space-between;
-
-
 }
-
-
 
 .counter {
     
@@ -99,7 +92,6 @@ main {
     color: #fff;
     font-size: calc(100vw/1440*35);
     font-weight: 600;
-
 }
 
 .couter__points-life {
@@ -115,7 +107,6 @@ main {
     z-index: 1;
     display: flex;
     justify-content: flex-end;
-
 }
 
 .couter__points-life-item {
@@ -150,6 +141,7 @@ main {
     text-transform: uppercase;
     color: #27A8F3;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .start:hover {
@@ -168,6 +160,7 @@ main {
     text-transform: uppercase;
     background-color: #fff;
     color: #27A8F3;
+    cursor: pointer;
 }
 
 .manual:hover {
@@ -182,6 +175,9 @@ main {
     box-shadow: inset 0px calc(100vw/160) calc(100vw/144) rgba(0, 0, 0, 0.2);
     border-radius: 50%;
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
 }
 
 #hole_1{
@@ -212,7 +208,16 @@ main {
 .animal {
     width: calc(100vw/1440*160);
     height: calc(100vw/1440*160);
+    animation: move 3s ease-out;
+    
 }
+
+@keyframes move {
+    from {width: 50%; height: 50%; opacity: 0;}
+    40% {width: calc(100vw/1440*160); height: calc(100vw/1440*160); opacity: 1;}
+    60% {width: calc(100vw/1440*160); height: calc(100vw/1440*160); opacity: 1;}
+    to {width: 20%; height: 20%; opacity: 0;}
+    }
 
 /*Модальные окна*/
 .modal_wrap {
@@ -269,6 +274,10 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.modal__close:hover {
+    background: #FFC700;
 }
 
 .gameOver__message-begin {
