@@ -15,7 +15,7 @@
             <div class = 'counter'>
                 <div class = 'counter__level-wrap'>
                     <div class = 'counter__level'>
-                        3
+                        0
                     </div>
 
                 </div>
@@ -32,7 +32,7 @@
                         </div>
                         <div class = 'couter__points-life-item heart_active'>
                         </div>
-                        <div class = 'couter__points-life-item heart_deactive'>
+                        <div class = 'couter__points-life-item heart_active'>
                         </div>
                     </div>
 
@@ -41,8 +41,11 @@
             </div>
 
             <div class = 'control'>
-                <button class = 'start'>
+                <button id = 'start' class = 'toggle-game'>
                     Начать
+                </button>
+                <button id = 'stop' class = 'toggle-game invis'>
+                    Стоп
                 </button>
                 <a href="#rules">
                     <button class = 'manual' href="#rules">
@@ -70,13 +73,7 @@
         </div>
 
     </main>
-
-<!-- Это ссылка для открывания модального окна об окончании игры. Удалить после приема верстки.-->
-
-    <div style="background-color: #AE8348;">
-        <a href="#gameOver">Открыть финальное окно</a>
-     </div>
-    
+  
 <!--Модальные окна-->
     
     <div id = 'gameOver' class="modal_wrap">
@@ -91,7 +88,7 @@
                     Поздравляем! Вы набрали:
                 </div>
                 <div class="gameOver__points">
-                    512
+                    
                 </div>
                 <div class="gameOver__message-end">
                     очков!
@@ -99,7 +96,7 @@
             </div>
 
             <div class="modal__close">
-                <a href="#close" title="OK" >OK</a>
+                <a id = closeFinalModal href="#close" title="OK" >OK</a>
             </div>
             
         </div>

@@ -1,60 +1,122 @@
+class Game {
+    constructor () {
+        this.scope = 0;
+        this.lives = 3;
+        this.level = 1;
+        this.timeOfCycle = 3000;
+        this.hole = '';
+        this.animal = '';
+        this.timer = '';
+        this.stop = document.querySelector('#stop');
+        this.start = document.querySelector('#start');
+        this.levelCount = document.querySelector('.counter__level');
+    }
 
-let start = document.querySelector('.start');
-start.addEventListener('click', beginGame);
+    //Прячем кнопку "Начать", показываем кнопку "Стоп"
+    beginGame() {
+        this.stop.addEventListener( 'click', this.stopGame.bind(this) );
+        this.start.classList.toggle('invis');
+        this.stop.classList.toggle('invis');
+        this.goGame()
+    }
 
-//Запуск игры
-function beginGame() {
-    let pointsSuccess = document.querySelector('.couter__points-success');
-        pointsSuccess.innerHTML = 0;
-
-    goGame();
-
-    function goGame() {
+    //Запуск игры
+    goGame() {
         //Получаем случайную нору и случайное животное
-        let hole = randomValue.getRandomHole();
-        let animal = randomValue.getRandomAnimal();
+        this.hole = this.getRandomHole();
+        this.animal = this.getRandomAnimal();
 
         //Вешаем обработчик клика на животное и вставляем животное в нору
-        animal.addEventListener('mousedown', catchedAnimal);
-        hole.appendChild(animal);
+        this.animal.addEventListener( 'mousedown', this.catchedAnimal.bind(this) );
+        this.hole.appendChild(this.animal);
 
         //Убираем животное по таймеру и перезапускаем игру
-        let timer = setTimeout(newCycle, 3000);
-
-        function newCycle() {
-            hole.removeChild(animal);
-            animal.removeEventListener('mousedown', catchedAnimal);
-            restart();             
-        }
-
-        function restart() {
-            setTimeout(goGame, 1000);
-        }
-
-        //Обработка клика
-        function catchedAnimal(event) {
-            clearTimeout(timer); //Отменяем удаление животного по таймеру
-            checkClick (event);
-            newCycle(); //Запускаем новый цикл
-            console.log(event.toElement);
-        }
-
-        //Запись очков и жизней
-        function checkClick (event) {
-            let animalName = event.toElement.id;
-            if (animalName === 'mouse') {
-                newGame.scope += 10;
-                pointsSuccess.innerHTML = newGame.scope;
-            }
-            console.log(animalName);
-            console.log(newGame.scope);
-
-        }
+        this.timer = setTimeout( this.newCycle.bind(this), this.timeOfCycle );
     }
-};
 
-//Генератор случайных нор и животных
-let randomValue = {
+    //Убираем животное и перезапускаем игру
+    newCycle() {
+        this.hole.removeChild(this.animal);
+        this.animal.removeEventListener('mousedown', this.catchedAnimal);
+        this.goGame();
+    }
+
+    //Обработка клика по животному
+    catchedAnimal(event) {
+
+        //Отменяем удаление животного по таймеру
+        clearTimeout(this.timer); 
+
+        //Если клик по мыши - добавляем 10 очков
+        if (event.toElement.id === 'mouse') {
+            this.scope += 10;
+            document.querySelector('.couter__points-success').innerHTML = this.scope;
+
+            //После каждых 50-и очков мы:
+            if (this.scope%50 === 0) { 
+                //ускоряем игру
+                this.timeOfCycle *= 0.8;
+                //Увеличиваем счетчик уровня
+                this.levelCount.innerHTML = this.level + 1;
+                this.level += 1;
+            };
+
+            //Запускаем новый цикл
+            this.newCycle(); 
+
+        //Иначе - убираем жизнь. Если жизней 0, то заканчиваем игру.
+        } else {
+        let lifePointsActive = document.querySelectorAll('.heart_active');
+        lifePointsActive[0].classList.remove('heart_active');
+        lifePointsActive[0].classList.add('heart_deactive');
+        this.lives--;
+            if (this.lives === 0) {
+                this.gameOver();
+            } else {
+            //Запускаем новый цикл
+            this.newCycle(); 
+            }
+        } 
+    }
+
+    stopGame() {
+        clearTimeout(this.timer); //Отменяем удаление животного по таймеру
+        this.gameOver(); 
+    }
+
+    gameOver() {
+        //Записываем набранные очки в модальное окно
+        let gameOverPoints = document.querySelector('.gameOver__points');
+        gameOverPoints.innerHTML = this.scope;
+
+        //Вызываем срабатывание псевдоэлемента #gameOver:target для замены display модального окна с none на flex.
+        window.location.replace(window.location.origin + '/#gameOver');
+
+        //Меняем кнопки старта/стопа игры
+        this.start.classList.toggle('invis');
+        this.stop.classList.toggle('invis');
+
+        //Вешаем запуск очистки разметки на кнопку "ОК" финального окна
+        let finalModal = document.querySelector('#closeFinalModal');
+        finalModal.addEventListener( 'click', this.clearData.bind(this), {once: true});
+    }
+
+    clearData() {
+        //Восстанавливаем сердечки в разметке
+        let lifePoints = document.querySelectorAll('.couter__points-life-item');
+        for (let i = 0; i < lifePoints.length; i++) {
+            lifePoints[i].classList.remove('heart_deactive');
+            lifePoints[i].classList.add('heart_active');
+        };
+
+        //Сбрасываем очки
+        document.querySelector('.couter__points-success').innerHTML = 0;
+
+        //Убираем животное
+        this.hole.removeChild(this.animal);
+    }
+
+    //Генератор случайных нор и животных
     getRandomHole() {
         let min = 1;
         let max = 5;
@@ -62,7 +124,7 @@ let randomValue = {
         let numHole = Math.floor(randNum);
         let hole = document.getElementById(`${'hole_'}${numHole}`);
         return hole;
-    },
+    }
 
     getRandomAnimalName() {
         //Пытаемся вызвать имя мыши
@@ -77,7 +139,7 @@ let randomValue = {
         let numberAnimal = Math.random() * (max - min);
         let randAnimal = zoo[Math.floor(numberAnimal)];
         return randAnimal;
-    },
+    }
 
     getRandomAnimal() {
         let animalName = this.getRandomAnimalName();
@@ -87,21 +149,13 @@ let randomValue = {
         img.src = `${'img/animals/'}${animalName}${'.png'}`;
         img.alt = `${animalName}`;
         return img;    
-    },
-};
-
-class Game {
-    constructor () {
-        this.scope = 0;
-        this.lives = 3;
-        this.isRunning = false;
-        this.isMouse = false;
     }
+}
 
-
-
-};
-
-let newGame = new Game();
+let start = document.querySelector('#start');
+start.addEventListener('click', () => {
+    let newGame = new Game();
+    newGame.beginGame();   
+});
 
 

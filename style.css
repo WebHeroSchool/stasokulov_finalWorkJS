@@ -129,7 +129,7 @@ main {
     display: flex;
 }
 
-.start {
+.toggle-game {
     width: calc(100vw/1440*233);
     height: calc(100vw/1440*71);
     border-radius: calc(100vw/1440*62);
@@ -144,9 +144,13 @@ main {
     cursor: pointer;
 }
 
-.start:hover {
+.toggle-game:hover {
     color: #fff;
     background-color: #27A8F3;
+}
+
+.invis {
+    display: none;
 }
 
 .manual {
