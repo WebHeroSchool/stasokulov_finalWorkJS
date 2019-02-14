@@ -1,12 +1,15 @@
+'use strict';
 class Game {
     constructor () {
         this.scope = 0;
         this.lives = 3;
         this.level = 1;
         this.timeOfCycle = 3000;
+        this.timeOfCycle2 = 1000;
         this.hole = '';
         this.animal = '';
         this.timer = '';
+        this.timer2 = '';
         this.stop = document.querySelector('#stop');
         this.start = document.querySelector('#start');
         this.levelCount = document.querySelector('.counter__level');
@@ -14,7 +17,7 @@ class Game {
 
     //Прячем кнопку "Начать", показываем кнопку "Стоп"
     beginGame() {
-        this.stop.addEventListener( 'click', this.stopGame.bind(this) );
+        this.stop.addEventListener( 'click', this.stopGame.bind(this), {once: true} );
         this.start.classList.toggle('invis');
         this.stop.classList.toggle('invis');
         this.goGame()
@@ -38,7 +41,7 @@ class Game {
     newCycle() {
         this.hole.removeChild(this.animal);
         this.animal.removeEventListener('mousedown', this.catchedAnimal);
-        this.goGame();
+        this.timer2 = setTimeout( this.goGame.bind(this), this.timeOfCycle2 );
     }
 
     //Обработка клика по животному
@@ -48,7 +51,7 @@ class Game {
         clearTimeout(this.timer); 
 
         //Если клик по мыши - добавляем 10 очков
-        if (event.toElement.id === 'mouse') {
+        if (event.target.id === 'mouse') {
             this.scope += 10;
             document.querySelector('.couter__points-success').innerHTML = this.scope;
 
@@ -56,6 +59,7 @@ class Game {
             if (this.scope%50 === 0) { 
                 //ускоряем игру
                 this.timeOfCycle *= 0.8;
+                this.timeOfCycle2 *= 0.8;
                 //Увеличиваем счетчик уровня
                 this.levelCount.innerHTML = this.level + 1;
                 this.level += 1;
@@ -80,7 +84,8 @@ class Game {
     }
 
     stopGame() {
-        clearTimeout(this.timer); //Отменяем удаление животного по таймеру
+        clearTimeout(this.timer); //Отменяем таймеры игры
+        clearTimeout(this.timer2);
         this.gameOver(); 
     }
 
@@ -90,15 +95,15 @@ class Game {
         gameOverPoints.innerHTML = this.scope;
 
         //Вызываем срабатывание псевдоэлемента #gameOver:target для замены display модального окна с none на flex.
-        window.location.replace(window.location.origin + '/#gameOver');
+        document.querySelector('#goModalGameOver').click();
 
         //Меняем кнопки старта/стопа игры
         this.start.classList.toggle('invis');
         this.stop.classList.toggle('invis');
 
         //Вешаем запуск очистки разметки на кнопку "ОК" финального окна
-        let finalModal = document.querySelector('#closeFinalModal');
-        finalModal.addEventListener( 'click', this.clearData.bind(this), {once: true});
+        this.finalModal = document.querySelector('#closeFinalModal');
+        this.finalModal.addEventListener( 'click', this.clearData.bind(this), {once: true});
     }
 
     clearData() {
@@ -109,11 +114,16 @@ class Game {
             lifePoints[i].classList.add('heart_active');
         };
 
+        //Сбрасываем уровни
+        this.levelCount.innerHTML = 1;
+
         //Сбрасываем очки
         document.querySelector('.couter__points-success').innerHTML = 0;
 
-        //Убираем животное
-        this.hole.removeChild(this.animal);
+        //Убираем животное из норы, если оно там есть
+        if (this.hole.childNodes.length === 2) {
+            this.hole.removeChild(this.animal);
+        }
     }
 
     //Генератор случайных нор и животных
@@ -128,7 +138,7 @@ class Game {
 
     getRandomAnimalName() {
         //Пытаемся вызвать имя мыши
-        let chanceMouse = 0.4;//Вероятность вызова имени мыши
+        let chanceMouse = 0.5;//Вероятность вызова имени мыши
         if( Math.random() <= chanceMouse ) {
             return 'mouse';
         };
@@ -153,6 +163,7 @@ class Game {
 }
 
 let start = document.querySelector('#start');
+
 start.addEventListener('click', () => {
     let newGame = new Game();
     newGame.beginGame();   
