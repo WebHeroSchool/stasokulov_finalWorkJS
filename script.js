@@ -63,6 +63,9 @@ class Game {
                 //Увеличиваем счетчик уровня
                 this.levelCount.innerHTML = this.level + 1;
                 this.level += 1;
+                //Анимируем звезду
+                this.levelCount.classList.toggle('animation-level');
+                setTimeout(() => {this.levelCount.classList.toggle('animation-level')}, 0);
             };
 
             //Запускаем новый цикл
@@ -138,7 +141,7 @@ class Game {
 
     getRandomAnimalName() {
         //Пытаемся вызвать имя мыши
-        let chanceMouse = 0.5;//Вероятность вызова имени мыши
+        let chanceMouse = 0.99;//Вероятность вызова имени мыши
         if( Math.random() <= chanceMouse ) {
             return 'mouse';
         };

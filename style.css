@@ -64,6 +64,16 @@ main {
     padding: calc(100vw/1440*5) 0 0 0;
 }
 
+.animation-level {
+    animation: newLevel 1s ease-out;
+}
+
+@keyframes newLevel {
+    from {transform: translateY(0) rotateY(0deg);}
+    50% {transform: translateY( calc(-100vw/1440*69) ) rotateY(180deg);}
+    to {transform: translateY(0) rotateY(360deg);}
+    }
+
 .counter__points {
     margin: calc(-100vw/1440*119) 0 0 calc(100vw/1440*61);
     position: relative;
@@ -94,6 +104,8 @@ main {
     font-weight: 600;
 }
 
+
+
 .couter__points-life {
     width: calc(100vw/1440*193);
     height: calc(100vw/1440*46);
@@ -106,7 +118,8 @@ main {
     position: relative;
     z-index: 1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    direction: rtl;
 }
 
 .couter__points-life-item {
@@ -213,7 +226,6 @@ main {
     width: calc(100vw/1440*160);
     height: calc(100vw/1440*160);
     animation: move 3s ease-out;
-    
 }
 
 @keyframes move {
