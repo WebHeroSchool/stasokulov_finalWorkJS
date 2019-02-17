@@ -141,7 +141,7 @@ class Game {
 
     getRandomAnimalName() {
         //Пытаемся вызвать имя мыши
-        let chanceMouse = 0.99;//Вероятность вызова имени мыши
+        let chanceMouse = 0.5;//Вероятность вызова имени мыши
         if( Math.random() <= chanceMouse ) {
             return 'mouse';
         };

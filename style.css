@@ -104,8 +104,6 @@ main {
     font-weight: 600;
 }
 
-
-
 .couter__points-life {
     width: calc(100vw/1440*193);
     height: calc(100vw/1440*46);
