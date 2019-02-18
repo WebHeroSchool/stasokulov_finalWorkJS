@@ -13,11 +13,13 @@ class Game {
         this.stop = document.querySelector('#stop');
         this.start = document.querySelector('#start');
         this.levelCount = document.querySelector('.counter__level');
+        this.stop.addEventListener( 'click', this.stopGame.bind(this), {once: false} );
+        this.finalModal = document.querySelector('#closeFinalModal'); //Вешаем запуск очистки разметки на кнопку "ОК" финального окна
+        this.finalModal.addEventListener( 'click', this.clearData.bind(this), {once: false});
     }
 
     //Прячем кнопку "Начать", показываем кнопку "Стоп"
-    beginGame() {
-        this.stop.addEventListener( 'click', this.stopGame.bind(this), {once: true} );
+    beginGame() {    
         this.start.classList.toggle('invis');
         this.stop.classList.toggle('invis');
         this.goGame()
@@ -89,7 +91,7 @@ class Game {
     stopGame() {
         clearTimeout(this.timer); //Отменяем таймеры игры
         clearTimeout(this.timer2);
-        this.gameOver(); 
+        this.gameOver();
     }
 
     gameOver() {
@@ -103,10 +105,6 @@ class Game {
         //Меняем кнопки старта/стопа игры
         this.start.classList.toggle('invis');
         this.stop.classList.toggle('invis');
-
-        //Вешаем запуск очистки разметки на кнопку "ОК" финального окна
-        this.finalModal = document.querySelector('#closeFinalModal');
-        this.finalModal.addEventListener( 'click', this.clearData.bind(this), {once: true});
     }
 
     clearData() {
@@ -117,11 +115,17 @@ class Game {
             lifePoints[i].classList.add('heart_active');
         };
 
+        //Восстанавливаем счетчик жизней
+        this.lives = 3;
+
         //Сбрасываем уровни
         this.levelCount.innerHTML = 1;
 
         //Сбрасываем очки
         document.querySelector('.couter__points-success').innerHTML = 0;
+
+        //Сбрасываем счетчик очков
+        this.scope = 0;
 
         //Убираем животное из норы, если оно там есть
         if (this.hole.childNodes.length === 2) {
@@ -166,10 +170,13 @@ class Game {
 }
 
 let start = document.querySelector('#start');
-
+let newGame = new Game();
 start.addEventListener('click', () => {
-    let newGame = new Game();
-    newGame.beginGame();   
+    
+    newGame.beginGame();  
+    
 });
+
+
 
 
